@@ -1,0 +1,264 @@
+/* The documentary is the primary hero content. */
+.hero {
+  min-height:0;
+  padding:0 clamp(20px,4vw,55px) 8px;
+  grid-template-columns:1fr;
+  justify-items:center;
+  gap:4px;
+}
+.hero-copy {
+  width:min(100%,560px);
+  text-align:center;
+}
+.hero-logo {
+  display:block;
+  width:100%;
+  height:auto;
+}
+.video-wrap {
+  width:min(100%,900px);
+  min-height:0;
+}
+.video-card {
+  width:100%;
+  aspect-ratio:16/5.6;
+  border-radius:16px 16px 16px 6px;
+}
+.video-card video {
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.video-orbit {
+  width:calc(100% + 20px);
+  height:auto;
+  aspect-ratio:1;
+}
+.duration-badge {
+  right:30px;
+  bottom:-19px;
+  width:115px;
+}
+.duration-badge strong {
+  font-size:18px;
+}
+.hero-media-links {
+  width:min(100%,520px);
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.hero-media-links a {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  padding:8px;
+  border:1px solid #a5ffc92b;
+  border-radius:9px;
+  background:#ffffff0a;
+  color:#d5f9df;
+  text-decoration:none;
+  transition:.25s;
+}
+.hero-media-links a:hover {
+  background:#ffffff17;
+  transform:translateY(-3px);
+}
+.hero-media-links span {
+  color:var(--mint);
+  display:grid;
+  place-items:center;
+}
+.hero-media-links small {
+  font-size:10px;
+  font-weight:700;
+}
+@media(max-width:800px) {
+  .hero {
+    padding:0 18px 16px;
+    gap:7px;
+  }
+  .video-card {
+    aspect-ratio:16/8.5;
+    border-radius:16px 16px 16px 7px;
+  }
+  .video-orbit {
+    width:calc(100% + 20px);
+    height:auto;
+  }
+  .duration-badge {
+    right:14px;
+    bottom:-24px;
+  }
+}
+@media(max-width:480px) {
+  .hero h1 {
+    font-size:39px;
+  }
+  .video-card {
+    aspect-ratio:16/10;
+  }
+  .duration-badge {
+    transform:scale(.86);
+    transform-origin:bottom right;
+  }
+  .hero-media-links {
+    gap:7px;
+  }
+  .hero-media-links a {
+    padding:10px 5px;
+    gap:5px;
+    flex-direction:column;
+  }
+  .hero-media-links small {
+    font-size:10px;
+  }
+}
+.film-info {
+  max-width:980px;
+  margin:0 auto;
+  padding:14px 24px 18px;
+  display:grid;
+  grid-template-columns:.8fr 1.45fr .7fr;
+  gap:16px;
+  align-items:center;
+}
+.film-info h2 {
+  margin:0;
+  font-size:clamp(23px,2.5vw,32px);
+  letter-spacing:-2px;
+}
+.film-info .source-pdf {
+  margin:8px 0 0;
+  padding:9px 17px;
+}
+.film-info-share {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:9px 14px;
+  background:linear-gradient(135deg,#073c79,#0a62aa);
+  border:1px solid #75caff42;
+  border-radius:11px;
+  color:#fff;
+}
+.film-info-share .share-icon {
+  flex:0 0 36px;
+  width:36px;
+  height:36px;
+  background:#ffffff12;
+  color:#8ed4ff;
+}
+.film-info-share h3 {
+  margin:0 0 7px;
+  font-size:11px;
+}
+.film-info-share .social-links a {
+  width:27px;
+  height:27px;
+  color:#bce7ff;
+  border-color:#ffffff2e;
+}
+.film-info-share .social-links a:hover {
+  background:#8ed4ff;
+  color:#073c79;
+}
+.viewer-count {
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  text-align:center;
+}
+.viewer-count span {
+  font-size:10px;
+  color:#557566;
+}
+.viewer-count strong {
+  font-size:20px;
+  color:var(--green);
+}
+@media(max-width:800px) {
+  .film-info {
+    padding:26px 22px 34px;
+    grid-template-columns:1fr;
+    gap:18px;
+    text-align:center;
+  }
+  .film-info .source-pdf {
+    margin:14px auto 0;
+  }
+  .film-info-share {
+    justify-content:center;
+    text-align:right;
+  }
+  .viewer-count {
+    padding-top:4px;
+  }
+}
+@media(max-width:480px) {
+  .film-info-share {
+    padding:16px;
+    gap:12px;
+  }
+  .film-info-share h3 {
+    font-size:13px;
+  }
+  .film-info-share .share-icon {
+    display:none;
+  }
+}
+/* Compact footer */
+.site-footer {
+  padding-top:0;
+}
+.footer-main {
+  min-height:0;
+  padding:16px 30px 12px;
+  gap:22px;
+}
+.footer-mark {
+  width:48px;
+  height:48px;
+  border-radius:13px;
+}
+.footer-mark svg {
+  width:25px;
+  height:25px;
+}
+.footer-about h2 {
+  font-size:19px;
+  margin:12px 0 0;
+}
+.footer-column {
+  gap:4px;
+  font-size:10px;
+}
+.footer-column b {
+  font-size:11px;
+  margin-bottom:2px;
+}
+.footer-column a {
+  font-size:9px;
+}
+.footer-copyright {
+  padding:8px 25px 10px;
+  font-size:9px;
+  line-height:1.45;
+}
+.footer-logo {
+  display:block;
+  width:min(100%,235px);
+  height:auto;
+}
+@media(max-width:800px) {
+  .footer-main {
+    padding:28px 22px;
+    gap:25px;
+  }
+  .footer-copyright {
+    padding:13px 20px;
+    font-size:10px;
+  }
+}
