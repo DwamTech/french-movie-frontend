@@ -14,12 +14,29 @@
 }
 html {
   scroll-behavior:smooth;
+  scrollbar-color:#d4a632 #06152c;
+  scrollbar-width:thin;
 }
 body {
   margin:0;
   background:var(--pale);
   font-family:Cairo,Arial,sans-serif;
   color:var(--ink);
+}
+::-webkit-scrollbar {
+  width:12px;
+}
+::-webkit-scrollbar-track {
+  background:#06152c;
+  border-right:1px solid #ffffff12;
+}
+::-webkit-scrollbar-thumb {
+  background:linear-gradient(180deg,#f0cf78,#a9761d);
+  border:3px solid #06152c;
+  border-radius:999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background:linear-gradient(180deg,#ffe59a,#c99029);
 }
 a {
   color:inherit;

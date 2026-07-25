@@ -1,4 +1,4 @@
-import { Bookmark, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import { FaFacebookF, FaTelegram, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 
@@ -7,7 +7,6 @@ export function SourcesSection() {
     <section className="film-info" id="sources">
       <div className="film-info-source">
         <h2>مصادر الفيلم</h2>
-        <a className="source-pdf" href="https://french-movie.fr/sourcesar.pdf" target="_blank" rel="noreferrer"><Bookmark size={18} />حمل PDF</a>
       </div>
       <div className="film-info-share">
         <div className="share-icon"><Share2 size={24} /></div>

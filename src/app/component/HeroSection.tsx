@@ -1,26 +1,34 @@
-import { Download, FileAudio, FileText } from "lucide-react";
+import { Download } from "lucide-react";
 
-export function HeroSection() {
+const filmUrl = "/ar.m4v";
+
+type HeroSectionProps = {
+  language: "ar" | "fr";
+  onToggleLanguage: () => void;
+};
+
+export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
+  const isArabic = language === "ar";
+
   return (
     <section className="hero-shell">
       <div className="hero" id="top">
         <div className="radar radar-one" /><div className="radar radar-two" />
         <div className="hero-copy">
-          <img className="hero-logo" src="/logo-ar.png" alt="محطات من جرائم فرنسا" />
+          <img className="hero-logo" src="/logo-ar.png" alt={isArabic ? "محطات من جرائم فرنسا" : "Chroniques des crimes de France"} />
         </div>
         <div className="video-wrap">
           <div className="video-orbit"><span className="orbit-dot dot-one" /><span className="orbit-dot dot-two" /></div>
           <div className="video-card">
-            <video controls preload="metadata" playsInline aria-label="فيلم محطات من جرائم فرنسا">
-              <source src="/ar.m4v" type="video/x-m4v" />
-              متصفحك لا يدعم تشغيل الفيديو.
+            <video controls preload="metadata" playsInline poster="/video-cover.jpg" aria-label={isArabic ? "فيلم محطات من جرائم فرنسا" : "Film Chroniques des crimes de France"}>
+              <source src={filmUrl} type="video/x-m4v" />
+              {isArabic ? "متصفحك لا يدعم تشغيل الفيديو." : "Votre navigateur ne prend pas en charge la lecture vidéo."}
             </video>
           </div>
         </div>
-        <div className="hero-media-links" aria-label="مواد الفيلم">
-          <a href="#downloads"><span><Download size={18} /></span><small>تحميل الفيلم</small></a>
-          <a href="#downloads"><span><FileAudio size={18} /></span><small>بودكاست الفيلم</small></a>
-          <a href="#sources"><span><FileText size={18} /></span><small>كتاب الفيلم</small></a>
+        <div className="hero-media-links" aria-label={isArabic ? "مواد الفيلم" : "Ressources du film"}>
+          <a href={filmUrl} download="ar.m4v"><span><Download size={18} /></span><small>{isArabic ? "تحميل الفيلم" : "Télécharger le film"}</small></a>
+          <button className="language-switch" type="button" onClick={onToggleLanguage} aria-label={isArabic ? "التبديل إلى اللغة الفرنسية" : "Passer à la langue arabe"}><small>{isArabic ? "Langue française" : "اللغة العربية"}</small></button>
         </div>
       </div>
     </section>
