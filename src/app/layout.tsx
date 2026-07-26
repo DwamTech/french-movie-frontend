@@ -5,6 +5,9 @@ import "./showcase-cards.css";
 import "./hero-video.css";
 
 export const metadata: Metadata = {
+  icons: {
+    icon: "/france.ico",
+  },
   title: "ذاكرة باريس | فيلم وثائقي",
   description: "فيلم وثائقي قصير عن ذاكرة المدينة.",
 };

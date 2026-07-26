@@ -25,6 +25,7 @@
 .video-wrap {
   width:min(100%,1040px);
   min-height:0;
+  isolation:isolate;
 }
 .video-card {
   width:100%;
@@ -35,6 +36,8 @@
   border-radius:12px;
   background:#07101f;
   box-shadow:0 24px 55px #00000080,0 0 0 4px #ffffff0a;
+  transform:translateZ(0);
+  backface-visibility:hidden;
 }
 .video-card video {
   display:block;
@@ -43,11 +46,23 @@
   border-radius:6px;
   object-fit:cover;
 }
+.video-card video:fullscreen {
+  width:100vw;
+  height:100vh;
+  border-radius:0;
+  object-fit:contain;
+  background:#000;
+}
 .video-orbit {
   width:calc(100% + 20px);
   height:auto;
   aspect-ratio:1;
+  z-index:0;
+  pointer-events:none;
+  will-change:transform;
+  animation:spin 20s linear infinite;
 }
+.radar { animation:spin 20s linear infinite; }
 .duration-badge {
   right:30px;
   bottom:-19px;
@@ -144,6 +159,10 @@ html[lang="fr"] .language-flag {
     aspect-ratio:16/8.5;
     padding:5px;
     border-radius:11px;
+  }
+  .video-card video {
+    object-fit:contain;
+    background:#000;
   }
   .video-orbit {
     width:calc(100% + 20px);
@@ -350,5 +369,26 @@ html[lang="fr"] .language-flag {
   .footer-copyright {
     padding:13px 20px;
     font-size:10px;
+  }
+}
+
+@media(max-width:480px) {
+  .footer-main {
+    text-align:center;
+    justify-items:center;
+  }
+  .footer-about,
+  .footer-share {
+    justify-self:center;
+  }
+  .footer-logo {
+    margin-inline:auto;
+  }
+  .footer-share-heading,
+  .footer-social-links {
+    justify-content:center;
+  }
+  .footer-share-heading div {
+    align-items:center;
   }
 }

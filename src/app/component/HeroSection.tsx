@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import { Download } from "lucide-react";
 
 const filmUrl = "/ar.m4v";
@@ -9,6 +12,22 @@ type HeroSectionProps = {
 
 export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
   const isArabic = language === "ar";
+  useEffect(() => {
+    const video = document.querySelector<HTMLVideoElement>(".video-card video");
+    const updateOrientation = () => {
+      if (document.fullscreenElement === video) {
+        const orientation = screen.orientation as ScreenOrientation & {
+          lock?: (mode: "landscape") => Promise<void>;
+        };
+        orientation.lock?.("landscape")?.catch(() => undefined);
+      } else {
+        screen.orientation?.unlock();
+      }
+    };
+
+    document.addEventListener("fullscreenchange", updateOrientation);
+    return () => document.removeEventListener("fullscreenchange", updateOrientation);
+  }, []);
 
   return (
     <section className="hero-shell">
