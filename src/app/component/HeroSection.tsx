@@ -12,6 +12,7 @@ type HeroSectionProps = {
 
 export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
   const isArabic = language === "ar";
+
   useEffect(() => {
     const video = document.querySelector<HTMLVideoElement>(".video-card video");
     const updateOrientation = () => {
@@ -34,15 +35,33 @@ export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
       <div className="hero" id="top">
         <div className="radar radar-one" /><div className="radar radar-two" />
         <div className="hero-copy">
-          <img className="hero-logo" src="/logo-ar.png" alt={isArabic ? "محطات من جرائم فرنسا" : "Chroniques des crimes de France"} />
+          <div className="cinematic-title-shell" dir={isArabic ? "rtl" : "ltr"}>
+           
+            <h1 className="cinematic-title">
+              <span className="title-line title-line-primary">{isArabic ? "محطات من" : "Chroniques des"}</span>
+              <span className="title-line title-line-accent">{isArabic ? "جرائم فرنسا" : "crimes de France"}</span>
+            </h1>
+            <span className="title-signature" aria-hidden="true"><i /><b /><i /></span>
+          </div>
         </div>
         <div className="video-wrap">
           <div className="video-orbit"><span className="orbit-dot dot-one" /><span className="orbit-dot dot-two" /></div>
-          <div className="video-card">
-            <video controls preload="metadata" playsInline poster="/video-cover.jpg" aria-label={isArabic ? "فيلم محطات من جرائم فرنسا" : "Film Chroniques des crimes de France"}>
-              <source src={filmUrl} type="video/x-m4v" />
-              {isArabic ? "متصفحك لا يدعم تشغيل الفيديو." : "Votre navigateur ne prend pas en charge la lecture vidéo."}
-            </video>
+          <div className="cinema-screen">
+            <div className="cinema-marquee" aria-hidden="true"><span /><b>{isArabic ? "قاعة العرض الرئيسية" : "Salle de projection"}</b><span /></div>
+            <div className="cinema-frame">
+              <div className="screen-glow" aria-hidden="true" />
+              <div className="video-card">
+                <video controls preload="metadata" playsInline poster="/video-cover.jpg" aria-label={isArabic ? "فيلم محطات من جرائم فرنسا" : "Film Chroniques des crimes de France"}>
+                  <source src={filmUrl} type="video/x-m4v" />
+                  {isArabic ? "متصفحك لا يدعم تشغيل الفيديو." : "Votre navigateur ne prend pas en charge la lecture vidéo."}
+                </video>
+              </div>
+            </div>
+            <div className="cinema-console" aria-hidden="true">
+              <span className="speaker-grille" />
+              <span className="cinema-status"><i />CINEMA 01</span>
+              <span className="speaker-grille" />
+            </div>
           </div>
         </div>
         <div className="hero-media-links" aria-label={isArabic ? "مواد الفيلم" : "Ressources du film"}>
