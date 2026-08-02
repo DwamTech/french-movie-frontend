@@ -8,8 +8,8 @@ export const metadata: Metadata = {
   icons: {
     icon: "/france.ico",
   },
-  title: "ذاكرة باريس | فيلم وثائقي",
-  description: "فيلم وثائقي قصير عن ذاكرة المدينة.",
+  title: "من جرائم فرنسا | فيلم وثائقي",
+  description: "فيلم وثائقي قصير عن جرائم فرنسا.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

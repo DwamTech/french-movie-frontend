@@ -5,9 +5,9 @@ import { MdEmail } from "react-icons/md";
 const filmUrl = "https://french-movie.fr/ar.m4v";
 const encodedFilmUrl = encodeURIComponent(filmUrl);
 
-type FooterProps = { language: "ar" | "fr" };
+type FooterProps = { language: "ar" | "fr"; viewCount: number };
 
-export function Footer({ language }: FooterProps) {
+export function Footer({ language, viewCount }: FooterProps) {
   const isArabic = language === "ar";
   const shareTitle = isArabic ? "شاهد الفيلم الوثائقي محطات من جرائم فرنسا" : "Découvrez le documentaire Chroniques des crimes de France";
   const encodedShareTitle = encodeURIComponent(shareTitle);
@@ -16,7 +16,7 @@ export function Footer({ language }: FooterProps) {
     <footer className="site-footer">
       <div className="footer-main">
         <div className="footer-about"><img className="footer-logo" src="/logo-ar.png" alt={isArabic ? "محطات من جرائم فرنسا" : "Chroniques des crimes de France"} /></div>
-        <div className="footer-viewer-count"><span>{isArabic ? "أنت المشاهد رقم" : "Vous êtes le spectateur numéro"}</span><strong>587٬432</strong></div>
+        <div className="footer-viewer-count"><span>{isArabic ? "أنت المشاهد رقم" : "Vous êtes le spectateur numéro"}</span><strong>{viewCount.toLocaleString(isArabic ? "ar-EG" : "fr-FR")}</strong></div>
         <div className="footer-share">
           <div className="footer-share-heading"><Share2 size={21} /><div><b>{isArabic ? "شارك الفيلم" : "Partagez le film"}</b><span>{isArabic ? "وانشره بين أصدقائك" : "Partagez-le avec vos amis"}</span></div></div>
           <div className="footer-social-links">
