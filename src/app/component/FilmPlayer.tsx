@@ -2,10 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import type Hls from "hls.js";
-import { filmHlsUrl, filmMp4Url } from "../../lib/film";
+import { getFilmSources } from "../../lib/film";
 
-export function FilmPlayer({ label }: { label: string }) {
+export function FilmPlayer({ label, language }: { label: string; language: "ar" | "fr" }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { mp4Url, hlsUrl } = getFilmSources(language);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -36,7 +37,7 @@ export function FilmPlayer({ label }: { label: string }) {
       hls?.destroy();
       hls = undefined;
       video.addEventListener("loadedmetadata", restorePlayback, { once: true });
-      video.src = filmMp4Url;
+      video.src = mp4Url;
       video.load();
     };
 
@@ -48,8 +49,8 @@ export function FilmPlayer({ label }: { label: string }) {
 
     // Choose the source before autoplay starts so MP4 cannot race HLS setup.
     const setup = async () => {
-      if (video.canPlayType("application/vnd.apple.mpegurl")) {
-        // Native HLS controls its own quality; the original MP4 keeps full resolution.
+      if (!hlsUrl || video.canPlayType("application/vnd.apple.mpegurl")) {
+        // Keep full resolution when HLS is unavailable or browser-controlled.
         useMp4();
         return;
       }
@@ -88,7 +89,7 @@ export function FilmPlayer({ label }: { label: string }) {
         hls.on(HlsPlayer.Events.ERROR, (_event, data) => {
           if (data.fatal) useMp4();
         });
-        hls.loadSource(filmHlsUrl);
+        hls.loadSource(hlsUrl);
         hls.attachMedia(video);
         video.addEventListener("error", useMp4);
       } catch {
@@ -108,8 +109,11 @@ export function FilmPlayer({ label }: { label: string }) {
       video.removeEventListener("error", useMp4);
       video.removeEventListener("loadedmetadata", restorePlayback);
       hls?.destroy();
+      video.pause();
+      video.removeAttribute("src");
+      video.load();
     };
-  }, []);
+  }, [mp4Url, hlsUrl]);
 
   return (
     <video
@@ -122,7 +126,7 @@ export function FilmPlayer({ label }: { label: string }) {
       poster="/video-cover.jpg"
       aria-label={label}
     >
-      <a href={filmMp4Url}>{label}</a>
+      <a href={mp4Url}>{label}</a>
     </video>
   );
 }

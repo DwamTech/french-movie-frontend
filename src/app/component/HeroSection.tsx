@@ -3,9 +3,7 @@
 import { useEffect } from "react";
 import { Download } from "lucide-react";
 import { FilmPlayer } from "./FilmPlayer";
-import { filmDescription } from "../../lib/film";
-
-const filmUrl = "/ar.m4v";
+import { filmDescription, getFilmSources } from "../../lib/film";
 
 type HeroSectionProps = {
   language: "ar" | "fr";
@@ -14,6 +12,7 @@ type HeroSectionProps = {
 
 export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
   const isArabic = language === "ar";
+  const { downloadUrl, downloadName } = getFilmSources(language);
 
   useEffect(() => {
     const video = document.querySelector<HTMLVideoElement>(".video-card video");
@@ -45,7 +44,7 @@ export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
             </h1>
             <span className="title-signature" aria-hidden="true"><i /><b /><i /></span>
           </div>
-          <p className="film-summary">{isArabic ? filmDescription : "Regardez « Chroniques des crimes de France », un documentaire en arabe de 18 min 24 s, disponible en lecture en ligne et en téléchargement."}</p>
+          <p className="film-summary">{isArabic ? filmDescription : "Regardez « Chroniques des crimes de France », un documentaire en français de 18 min 11 s, disponible en lecture en ligne et en téléchargement."}</p>
         </div>
         <div className="video-wrap">
           <div className="video-orbit"><span className="orbit-dot dot-one" /><span className="orbit-dot dot-two" /></div>
@@ -54,7 +53,7 @@ export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
             <div className="cinema-frame">
               <div className="screen-glow" aria-hidden="true" />
               <div className="video-card">
-                <FilmPlayer label={isArabic ? "فيلم محطات من جرائم فرنسا" : "Film Chroniques des crimes de France"} />
+                <FilmPlayer language={language} label={isArabic ? "فيلم محطات من جرائم فرنسا" : "Film Chroniques des crimes de France"} />
               </div>
             </div>
             <div className="cinema-console" aria-hidden="true">
@@ -65,7 +64,7 @@ export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
           </div>
         </div>
         <div className="hero-media-links" aria-label={isArabic ? "مواد الفيلم" : "Ressources du film"}>
-          <a href={filmUrl} download="ar.m4v"><span><Download size={18} /></span><small>{isArabic ? "تحميل الفيلم" : "Télécharger le film"}</small></a>
+          <a href={downloadUrl} download={downloadName}><span><Download size={18} /></span><small>{isArabic ? "تحميل الفيلم" : "Télécharger le film"}</small></a>
           <button className="language-switch" type="button" onClick={onToggleLanguage} aria-label={isArabic ? "التبديل إلى اللغة الفرنسية" : "Passer à la langue arabe"}><small>{isArabic ? "Langue française" : "اللغة العربية"}</small></button>
         </div>
       </div>

@@ -37,7 +37,7 @@ export const filmSchema = {
       description: filmDescription,
       image: filmPosterUrl,
       genre: "Documentary",
-      inLanguage: "ar",
+      inLanguage: ["ar", "fr"],
       duration: "PT18M24S",
       isAccessibleForFree: true,
       mainEntityOfPage: { "@id": `${filmPageUrl}#webpage` },
