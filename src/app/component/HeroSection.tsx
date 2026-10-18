@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { Download } from "lucide-react";
 import { FilmPlayer } from "./FilmPlayer";
+import { filmDescription } from "../../lib/film";
 
 const filmUrl = "/ar.m4v";
 
@@ -39,11 +40,12 @@ export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
           <div className="cinematic-title-shell" dir={isArabic ? "rtl" : "ltr"}>
            
             <h1 className="cinematic-title">
-              <span className="title-line title-line-primary">{isArabic ? "محطات من" : "Chroniques des"}</span>
+              <span className="title-line title-line-primary">{isArabic ? "محطات من" : "Chroniques des"}</span>{" "}
               <span className="title-line title-line-accent">{isArabic ? "جرائم فرنسا" : "crimes de France"}</span>
             </h1>
             <span className="title-signature" aria-hidden="true"><i /><b /><i /></span>
           </div>
+          <p className="film-summary">{isArabic ? filmDescription : "Regardez « Chroniques des crimes de France », un documentaire en arabe de 18 min 24 s, disponible en lecture en ligne et en téléchargement."}</p>
         </div>
         <div className="video-wrap">
           <div className="video-orbit"><span className="orbit-dot dot-one" /><span className="orbit-dot dot-two" /></div>
