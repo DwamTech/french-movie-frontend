@@ -49,9 +49,8 @@ export function FilmPlayer({ label }: { label: string }) {
     // Choose the source before autoplay starts so MP4 cannot race HLS setup.
     const setup = async () => {
       if (video.canPlayType("application/vnd.apple.mpegurl")) {
-        attemptingHls = true;
-        video.src = filmHlsUrl;
-        video.addEventListener("error", useMp4);
+        // Native HLS controls its own quality; the original MP4 keeps full resolution.
+        useMp4();
         return;
       }
 
@@ -64,8 +63,8 @@ export function FilmPlayer({ label }: { label: string }) {
         }
         attemptingHls = true;
         hls = new HlsPlayer({
-          capLevelToPlayerSize: true,
-          startLevel: 0,
+          capLevelToPlayerSize: false,
+          autoStartLoad: false,
           maxBufferLength: 15,
           maxMaxBufferLength: 30,
           backBufferLength: 15,
@@ -74,6 +73,17 @@ export function FilmPlayer({ label }: { label: string }) {
           levelLoadingTimeOut: 5000,
           levelLoadingMaxRetry: 0,
           fragLoadingMaxRetry: 1,
+        });
+        hls.on(HlsPlayer.Events.MANIFEST_PARSED, () => {
+          if (disposed || !hls) return;
+          // Lock the highest resolution before loading any video fragments.
+          const highestLevel = hls.levels.reduce((best, level, index, levels) => (
+            level.height > levels[best].height ||
+            (level.height === levels[best].height && level.bitrate > levels[best].bitrate)
+              ? index : best
+          ), 0);
+          hls.loadLevel = highestLevel;
+          hls.startLoad();
         });
         hls.on(HlsPlayer.Events.ERROR, (_event, data) => {
           if (data.fatal) useMp4();
