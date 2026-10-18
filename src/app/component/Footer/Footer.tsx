@@ -1,9 +1,9 @@
 import { Share2 } from "lucide-react";
 import { FaFacebookF, FaTelegram, FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
+import { filmPageUrl } from "../../../lib/film";
 
-const filmUrl = "https://french-movie.fr/ar.m4v";
-const encodedFilmUrl = encodeURIComponent(filmUrl);
+const encodedFilmUrl = encodeURIComponent(filmPageUrl);
 
 type FooterProps = { language: "ar" | "fr"; viewCount: number };
 

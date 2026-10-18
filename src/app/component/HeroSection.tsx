@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Download } from "lucide-react";
+import { FilmPlayer } from "./FilmPlayer";
 
 const filmUrl = "/ar.m4v";
 
@@ -51,10 +52,7 @@ export function HeroSection({ language, onToggleLanguage }: HeroSectionProps) {
             <div className="cinema-frame">
               <div className="screen-glow" aria-hidden="true" />
               <div className="video-card">
-                <video controls preload="metadata" playsInline poster="/video-cover.jpg" aria-label={isArabic ? "فيلم محطات من جرائم فرنسا" : "Film Chroniques des crimes de France"}>
-                  <source src={filmUrl} type="video/x-m4v" />
-                  {isArabic ? "متصفحك لا يدعم تشغيل الفيديو." : "Votre navigateur ne prend pas en charge la lecture vidéo."}
-                </video>
+                <FilmPlayer label={isArabic ? "فيلم محطات من جرائم فرنسا" : "Film Chroniques des crimes de France"} />
               </div>
             </div>
             <div className="cinema-console" aria-hidden="true">
