@@ -46,6 +46,7 @@ export function FilmPlayer({ label }: { label: string }) {
       startupTimer = setTimeout(useMp4, 8000);
     };
 
+    // Choose the source before autoplay starts so MP4 cannot race HLS setup.
     const setup = async () => {
       if (video.canPlayType("application/vnd.apple.mpegurl")) {
         attemptingHls = true;
@@ -56,7 +57,11 @@ export function FilmPlayer({ label }: { label: string }) {
 
       try {
         const { default: HlsPlayer } = await import("hls.js");
-        if (disposed || !video.paused || !HlsPlayer.isSupported()) return;
+        if (disposed) return;
+        if (!HlsPlayer.isSupported()) {
+          useMp4();
+          return;
+        }
         attemptingHls = true;
         hls = new HlsPlayer({
           capLevelToPlayerSize: true,
@@ -99,8 +104,9 @@ export function FilmPlayer({ label }: { label: string }) {
   return (
     <video
       ref={videoRef}
-      src={filmMp4Url}
       controls
+      autoPlay
+      muted
       preload="metadata"
       playsInline
       poster="/video-cover.jpg"
