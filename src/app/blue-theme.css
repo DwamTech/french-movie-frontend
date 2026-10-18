@@ -281,10 +281,24 @@ html,body,button,input,textarea,select,a {
   direction:ltr;
 }
 .footer-share-heading {
+  border:0;
+  padding:0;
+  background:transparent;
+  font:inherit;
+  text-align:start;
+  cursor:pointer;
   display:flex;
   align-items:center;
   gap:13px;
   color:#86e1c1;
+}
+.footer-share-heading:hover > svg {
+  background:#ffffff24;
+}
+.footer-share-heading:focus-visible {
+  outline:2px solid var(--gold);
+  outline-offset:6px;
+  border-radius:4px;
 }
 .footer-share-heading > svg {
   width:45px;
@@ -293,7 +307,7 @@ html,body,button,input,textarea,select,a {
   border-radius:50%;
   background:#ffffff12;
 }
-.footer-share-heading div {
+.footer-share-text {
   display:flex;
   flex-direction:column;
   gap:3px;
@@ -306,25 +320,23 @@ html,body,button,input,textarea,select,a {
   color:#c7daec;
   font-size:13px;
 }
-.footer-social-links {
-  display:flex;
-  gap:10px;
+.footer-share-status {
+  color:#c7daec;
+  font-size:11px;
 }
-.footer-social-links a {
-  width:42px;
-  height:42px;
-  display:grid;
-  place-items:center;
-  border:1px solid #ffffff24;
-  border-radius:50%;
-  color:#d9f7eb;
-  transition:.2s;
+.footer-share-status:empty {
+  display:none;
 }
-.footer-social-links a:hover {
-  color:#05251a;
-  background:#86e1c1;
-  border-color:#86e1c1;
-  transform:translateY(-3px);
+.footer-share-url {
+  width:220px;
+  max-width:100%;
+  padding:6px;
+  border:1px solid #ffffff40;
+  border-radius:4px;
+  background:#ffffff12;
+  color:#fff;
+  font:inherit;
+  font-size:11px;
 }
 .footer-copyright {
   max-width:1180px;

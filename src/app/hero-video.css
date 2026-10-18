@@ -460,10 +460,6 @@ html[lang="fr"] .language-flag {
 .footer-share-heading span {
   font-size:10px;
 }
-.footer-social-links a {
-  width:30px;
-  height:30px;
-}
 .footer-viewer-count {
   padding:4px 22px;
 }
@@ -496,11 +492,10 @@ html[lang="fr"] .language-flag {
   .footer-logo {
     margin-inline:auto;
   }
-  .footer-share-heading,
-  .footer-social-links {
+  .footer-share-heading {
     justify-content:center;
   }
-  .footer-share-heading div {
+  .footer-share-text {
     align-items:center;
   }
 }
