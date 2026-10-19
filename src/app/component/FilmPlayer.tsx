@@ -1,16 +1,27 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Play } from "lucide-react";
 import type Hls from "hls.js";
 import { getFilmSources } from "../../lib/film";
 
 export function FilmPlayer({ label, language }: { label: string; language: "ar" | "fr" }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [showPlayButton, setShowPlayButton] = useState(true);
   const { mp4Url, hlsUrl } = getFilmSources(language);
+
+  const playFilm = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    void video.play().catch(() => setShowPlayButton(true));
+  };
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    video.autoplay = false;
+    setShowPlayButton(true);
 
     let disposed = false;
     let hls: Hls | undefined;
@@ -19,11 +30,12 @@ export function FilmPlayer({ label, language }: { label: string; language: "ar" 
     let startupTimer: ReturnType<typeof setTimeout> | undefined;
     let resumeTime = 0;
     let resumePlayback = false;
+    let playbackRequested = false;
 
     const clearStartupTimer = () => clearTimeout(startupTimer);
     const restorePlayback = () => {
       if (resumeTime > 0) video.currentTime = resumeTime;
-      if (resumePlayback) void video.play().catch(() => undefined);
+      if (resumePlayback) void video.play().catch(() => setShowPlayButton(true));
     };
 
     const useMp4 = () => {
@@ -32,7 +44,7 @@ export function FilmPlayer({ label, language }: { label: string; language: "ar" 
       attemptingHls = false;
       clearStartupTimer();
       resumeTime = Number.isFinite(video.currentTime) ? video.currentTime : 0;
-      resumePlayback = !video.paused;
+      resumePlayback = playbackRequested;
       video.removeEventListener("error", useMp4);
       hls?.destroy();
       hls = undefined;
@@ -42,12 +54,22 @@ export function FilmPlayer({ label, language }: { label: string; language: "ar" 
     };
 
     const watchStartup = () => {
-      if (!attemptingHls || usingFallback || video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) return;
+      if (!playbackRequested || !attemptingHls || usingFallback || video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) return;
       clearStartupTimer();
       startupTimer = setTimeout(useMp4, 8000);
     };
+    const onPlay = () => {
+      playbackRequested = true;
+      setShowPlayButton(false);
+      if (hls?.levels.length) hls.startLoad();
+      watchStartup();
+    };
+    const onPause = () => {
+      playbackRequested = false;
+      clearStartupTimer();
+      setShowPlayButton(true);
+    };
 
-    // Choose the source before autoplay starts so MP4 cannot race HLS setup.
     const setup = async () => {
       if (!hlsUrl || video.canPlayType("application/vnd.apple.mpegurl")) {
         // Keep full resolution when HLS is unavailable or browser-controlled.
@@ -77,14 +99,14 @@ export function FilmPlayer({ label, language }: { label: string; language: "ar" 
         });
         hls.on(HlsPlayer.Events.MANIFEST_PARSED, () => {
           if (disposed || !hls) return;
-          // Lock the highest resolution before loading any video fragments.
+          // Select 720p now, but wait for Play before downloading video fragments.
           const highestLevel = hls.levels.reduce((best, level, index, levels) => (
             level.height > levels[best].height ||
             (level.height === levels[best].height && level.bitrate > levels[best].bitrate)
               ? index : best
           ), 0);
           hls.loadLevel = highestLevel;
-          hls.startLoad();
+          if (playbackRequested) hls.startLoad();
         });
         hls.on(HlsPlayer.Events.ERROR, (_event, data) => {
           if (data.fatal) useMp4();
@@ -92,19 +114,24 @@ export function FilmPlayer({ label, language }: { label: string; language: "ar" 
         hls.loadSource(hlsUrl);
         hls.attachMedia(video);
         video.addEventListener("error", useMp4);
+        watchStartup();
       } catch {
         useMp4();
       }
     };
 
-    video.addEventListener("play", watchStartup);
+    video.addEventListener("play", onPlay);
+    video.addEventListener("pause", onPause);
+    video.addEventListener("ended", onPause);
     video.addEventListener("playing", clearStartupTimer);
     void setup();
 
     return () => {
       disposed = true;
       clearStartupTimer();
-      video.removeEventListener("play", watchStartup);
+      video.removeEventListener("play", onPlay);
+      video.removeEventListener("pause", onPause);
+      video.removeEventListener("ended", onPause);
       video.removeEventListener("playing", clearStartupTimer);
       video.removeEventListener("error", useMp4);
       video.removeEventListener("loadedmetadata", restorePlayback);
@@ -116,17 +143,23 @@ export function FilmPlayer({ label, language }: { label: string; language: "ar" 
   }, [mp4Url, hlsUrl]);
 
   return (
-    <video
-      ref={videoRef}
-      controls
-      autoPlay
-      muted
-      preload="metadata"
-      playsInline
-      poster="/video-cover.jpg"
-      aria-label={label}
-    >
-      <a href={mp4Url}>{label}</a>
-    </video>
+    <div className="film-player">
+      <video
+        ref={videoRef}
+        controls
+        preload="metadata"
+        playsInline
+        poster="/video-cover.jpg"
+        aria-label={label}
+      >
+        <a href={mp4Url}>{label}</a>
+      </video>
+      {showPlayButton && <div className="film-play-overlay">
+        <button className="film-play-button" type="button" onClick={playFilm} aria-label={language === "ar" ? "تشغيل الفيلم" : "Lancer le film"}>
+          <Play aria-hidden="true" fill="currentColor" />
+        </button>
+        <span className="film-play-label" aria-hidden="true">{language === "ar" ? "اضغط للتشغيل" : "Cliquer pour lire"}</span>
+      </div>}
+    </div>
   );
 }
